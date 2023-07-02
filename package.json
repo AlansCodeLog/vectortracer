@@ -2,9 +2,18 @@
 	"name": "vectortracer",
 	"description": "Wasm bindings to visioncortex's vtracer library, a rust image vectorizer library.",
 	"version": "0.0.0-semanticlly-released",
+	"type": "module",
+	"exports": {
+		".": "./pkg/vectortracer.js"
+	},
+	"types": "./pkg/vectortracer.d.ts",
+	"sideEffects": [
+		"./pkg/vectortracer.js",
+		"./pkg/snippets/*"
+	],
 	"scripts": {
 		"lint:commits": "commitlint --from $(git rev-list HEAD --not --remotes | tail -1)^ --to HEAD --verbose",
-		"build": "pnpm exec wasm-pack build",
+		"build": "pnpm exec wasm-pack build && rm pkg/package.json",
 		"actions:debug": "act -r -v -j build",
 		"prepare": "pnpm run build"
 	},
@@ -14,14 +23,6 @@
 		"semantic-release": "^21.0.6",
 		"wasm-pack": "^0.12.1"
 	},
-	"exports": {
-		".": "./pkg/vectortracer.js"
-	},
-	"types": "./pkg/vectortracer.d.ts",
-	"sideEffects": [
-		"./pkg/vectortracer.js",
-		"./pkg/snippets/*"
-	],
 	"release": {
 		"extends": [
 			"@alanscodelog/semantic-release-config"
