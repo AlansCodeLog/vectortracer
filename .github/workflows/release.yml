@@ -1,0 +1,89 @@
+name: Release
+
+env:
+  USE_LOCKFILE: ${{ secrets.USE_LOCKFILE }}
+  ENABLE_RELEASE: ${{ secrets.ENABLE_RELEASE }}
+
+on:
+  push:
+    branches: [ master, alpha, beta ]
+  repository_dispatch:
+    types: [ release ]
+
+jobs:
+  release:
+    if: "! contains(toJSON(github.event.commits.*.message), '[skip ci]') && ! contains(toJSON(github.event.commits.*.message), '(no-release)')"
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ["latest"]
+
+    steps:
+
+    # region Setup
+    - uses: actions/checkout@v3
+
+    - name: Setting Up Node.js (${{ matrix.node-version }})
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - uses: pnpm/action-setup@v2.0.1
+      name: Install pnpm
+      id: pnpm-install
+      with:
+        version: latest
+
+    - name: Get Pnpm Cache Path
+      id: pnpm-cache
+      run: |
+        echo "::set-output name=dir::$(pnpm store path)"
+
+    - uses: actions/cache@v3
+      name: pnpm cache
+      with:
+        path: ${{ steps.pnpm-cache.outputs.dir }}
+        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-pnpm-store-
+
+    - run: "echo Cache Key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}"
+    - run: "echo Cache Restore-Keys: ${{ runner.os }}-pnpm-store-"
+    - run: "echo Pnpm Cache Hit: ${{ steps.pnpm-cache.outputs.cache-hit }}"
+
+    - uses: actions-rs/toolchain@v1
+      name: Install Rust Toolchain
+      with:
+          toolchain: stable
+
+    - uses: Swatinem/rust-cache@v2
+
+    # regionend
+
+
+    # region Steps
+    - run: pnpm install --frozen-lockfile
+      if: "env.USE_LOCKFILE == 'true'"
+
+    - run: pnpm install --no-lockfile
+      if: "env.USE_LOCKFILE != 'true'"
+
+    - run: pnpm build
+
+    - name: Release
+      if: "env.ENABLE_RELEASE == 'true'"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      run: npx semantic-release
+
+    - name: Release Dry Run
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      run: npx semantic-release --dry-run 
+      if: "env.ENABLE_RELEASE != 'true'"
+
+    - run: echo "env.ENABLE_RELEASE is ${{ env.ENABLE_RELEASE }}, no release can be published" && exit 1
+      if: "env.ENABLE_RELEASE != 'true'"
+    # regionend

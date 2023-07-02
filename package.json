@@ -1,0 +1,66 @@
+{
+	"name": "vectortracer",
+	"description": "Wasm bindings to visioncortex's vtracer library, a rust image vectorizer library.",
+	"version": "0.0.0-semanticlly-released",
+	"scripts": {
+		"lint:commits": "commitlint --from $(git rev-list HEAD --not --remotes | tail -1)^ --to HEAD --verbose",
+		"build": "pnpm exec wasm-pack build",
+		"actions:debug": "act -r -v -j build",
+		"prepare": "pnpm run build"
+	},
+	"devDependencies": {
+		"@alanscodelog/commitlint-config": "^2.0.0",
+		"@alanscodelog/semantic-release-config": "^3.0.0",
+		"semantic-release": "^21.0.6",
+		"wasm-pack": "^0.12.1"
+	},
+	"exports": {
+		".": "./pkg/vectortracer.js"
+	},
+	"types": "./pkg/vectortracer.d.ts",
+	"sideEffects": [
+		"./pkg/vectortracer.js",
+		"./pkg/snippets/*"
+	],
+	"release": {
+		"extends": [
+			"@alanscodelog/semantic-release-config"
+		]
+	},
+	"commitlint": {
+		"extends": [
+			"@alanscodelog"
+		]
+	},
+	"files": [
+		"pkg/*.js",
+		"pkg/*.ts",
+		"pkg/*.wasm",
+		"src",
+		"cargo.toml",
+		"build.sh",
+		"setup.sh",
+		"README.md"
+	],
+	"license": "MIT",
+	"keywords": [
+		"imagetracer",
+		"vectorizer",
+		"vectortracer",
+		"vector",
+		"converter",
+		"wasm",
+		"vtracer",
+		"visioncortex"
+	],
+	"author": "Alan North <alanscodelog@gmail.com>",
+	"repository": "https://github.com/AlansCodeLog/vectortracer.git",
+	"@comments": {
+		"": "This package json is the one we will actually use since the auto-generated one cannot be changed. It allows the repo to be installed directly from github and can allow adding additional files and build steps.",
+		"scripts": {
+			"lint:commits": "Lints all unpushed commits in the active branch.",
+			"prepare": "Needed so that if we pull the package from git it will get built and installed properly.",
+			"actions:debug": "For debugging github build action locally with nektos/act. Requires act and docker. Note: Cache will never work locally because of https://github.com/nektos/act/issues/285"
+		}
+	}
+}
