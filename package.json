@@ -34,9 +34,7 @@
 		]
 	},
 	"files": [
-		"pkg/*.js",
-		"pkg/*.ts",
-		"pkg/*.wasm",
+		"pkg/vectortracer*",
 		"src",
 		"cargo.toml",
 		"build.sh",
