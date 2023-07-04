@@ -34,7 +34,11 @@
 		]
 	},
 	"files": [
-		"pkg/vectortracer*",
+		"pkg/vectortracer.js",
+		"pkg/vectortracer.d.ts",
+		"pkg/vectortracer_bg.js",
+		"pkg/vectortracer_bg.wasm",
+		"pkg/vectortracer_bg.wasm.d.ts",
 		"src",
 		"cargo.toml",
 		"build.sh",
@@ -56,6 +60,7 @@
 	"repository": "https://github.com/AlansCodeLog/vectortracer.git",
 	"@comments": {
 		"": "This package json is the one we will actually use since the auto-generated one cannot be changed. It allows the repo to be installed directly from github and can allow adding additional files and build steps.",
+		"files": "The manually specified pkg/* files are a temporary workaround for https://github.com/npm/cli/issues/6164.",
 		"scripts": {
 			"lint:commits": "Lints all unpushed commits in the active branch.",
 			"prepare": "Needed so that if we pull the package from git it will get built and installed properly.",
