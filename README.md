@@ -30,7 +30,7 @@ npm install https://github.com/alanscodelog/vectortracer
 
 # Usage
 
-This is a simple example using a promise with setTimeout.
+This is a simple example showing how to create a wrapper function using a promise with setTimeout.
 
 ```ts
 import { BinaryImageConverter, BinaryImageConverterParams, Options } from "vectortracer"
@@ -40,7 +40,11 @@ export function imageDataToSvg(
 	vtracerOptions:BinaryImageConverterParams,
 	additionalOptions:Options
 ): string {
-	const converter = new BinaryImageConverter(imageData, vtraceroptions, additionalOptions)
+	const converter = new BinaryImageConverter(
+		imageData,
+		vtracerOptions,
+		additionalOptions
+	)
 
 	return new Promise(resolve => {
 		let done = false
@@ -66,6 +70,10 @@ export function imageDataToSvg(
 
 You can then use the function like so:
 ```ts
+const canvas = document.getElementById("my-canvas")
+const ctx = canvas.getContext("2d")
+const imageData = ctx.getImageData(0, 0, size.width, size.height)
+
 const result = await imageDataToSvg(imageData, vtracerOptions, additionalOptions)
 // if you have access to the DOM you can parse it to an svg element like so
 
