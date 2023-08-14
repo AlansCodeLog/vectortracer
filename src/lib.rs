@@ -93,9 +93,9 @@ pub struct BinaryImageConverterParams {
 pub struct Options {
 	/** Process an inverted version of the image. */
 	pub invert: Option<bool>,
-	/** The color given to the path, by the default this is the color returned by visioncortex's binary converter (i.e. black).*/
-	pub pathColor: Option<String>,
-	/** The color given to the background, white by default. */
+	/** The color to set for the path fill property. By the default this is the color returned by visioncortex's binary converter (i.e. black).*/
+	pub pathFill: Option<String>,
+	/** The color given to the svg element background, white by default. This is set in a style tag.*/
 	pub backgroundColor: Option<String>,
 	/** Additional attributes to add to the svg. For now this is a string to simplify things, therefore you cannot specify a style tag, or if you do, you're overriding the default one which contains the background color.*/
 	pub attributes: Option<String>,
@@ -158,7 +158,7 @@ impl BinaryImageConverter {
 			svg: Svg::new(SvgOptions {
 				scale: options.scale,
 				backgroundColor: options.backgroundColor.clone(),
-				pathColor: options.pathColor.clone(),
+				pathFill: options.pathFill.clone(),
 				attributes: options.attributes.clone(),
 			}),
 		}

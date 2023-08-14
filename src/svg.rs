@@ -7,7 +7,7 @@ pub struct Svg {
 pub struct SvgOptions {
 	pub scale: f32,
 	pub backgroundColor: Option<String>,
-	pub pathColor: Option<String>,
+	pub pathFill: Option<String>,
 	pub attributes: Option<String>,
 }
 /**
@@ -25,7 +25,7 @@ impl Svg {
 		// log(format!("{:#?}", paths).as_str());
 		// log(format!("{:#?}", paths.paths).as_str());
 		let defaultFill = &color.to_hex_string();
-		let fillColor = self.options.pathColor.as_ref().unwrap_or(defaultFill);
+		let fillColor = self.options.pathFill.as_ref().unwrap_or(defaultFill);
 		let path = format!(
 			r#"
                 <path
