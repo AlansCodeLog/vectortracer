@@ -31,7 +31,7 @@ impl Svg {
                 <path
                     d="{d}"
                     transform="translate({x},{y})"
-                    style="fill:{fill}"
+                    fill="{fill}"
                 />
             "#,
 			d = &string,
