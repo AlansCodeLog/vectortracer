@@ -6,7 +6,7 @@ env:
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, build ]
   repository_dispatch:
     types: [ build ]
 
@@ -55,6 +55,14 @@ jobs:
       name: Install Rust Toolchain
       with:
           toolchain: stable
+          default: true
+
+    - uses: actions-rs/toolchain@v1
+      name: Install Rust Toolchain
+      with:
+          toolchain: nightly
+          default: false
+          components: rustfmt
 
     - uses: Swatinem/rust-cache@v2
 
@@ -66,6 +74,8 @@ jobs:
 
     - run: pnpm install --no-lockfile
       if: "env.USE_LOCKFILE != 'true'"
+
+    - run: pnpm lint:rustfmt
 
     - run: pnpm build
     # regionend

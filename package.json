@@ -12,14 +12,20 @@
 		"./pkg/snippets/*"
 	],
 	"scripts": {
-		"lint:commits": "commitlint --from $(git rev-list HEAD --not --remotes | tail -1)^ --to HEAD --verbose",
+		"lint": "npm run lint:rustfmt",
+		"lint:rustfmt": "cargo +nightly fmt -- --check",
+		"lint:rustfmt:fix": "cargo +nightly fmt",
+		"lint:commits": "commitlint --from $(git rev-list --max-parents=0 HEAD) --to HEAD --verbose",
 		"build": "pnpm exec wasm-pack build && rm pkg/package.json",
+		"test": "cargo test",
 		"actions:debug": "act -r -v -j build",
-		"prepare": "pnpm run build"
+		"prepare": "husky install && pnpm run build"
 	},
 	"devDependencies": {
 		"@alanscodelog/commitlint-config": "^2.0.0",
 		"@alanscodelog/semantic-release-config": "^3.0.0",
+		"commitlint": "^17.7.1",
+		"husky": "^8.0.3",
 		"semantic-release": "^21.0.6",
 		"wasm-pack": "^0.12.1"
 	},
