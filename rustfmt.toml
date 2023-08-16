@@ -1,1 +1,3 @@
 hard_tabs = true
+fn_single_line=true
+unstable_features = true

@@ -12,9 +12,7 @@ use visioncortex::{
 use wasm_bindgen::prelude::*;
 
 #[allow(dead_code)]
-fn log(string: &str) {
-	console::log_1(&wasm_bindgen::JsValue::from_str(string));
-}
+fn log(string: &str) { console::log_1(&wasm_bindgen::JsValue::from_str(string)); }
 #[wasm_bindgen(start)]
 pub fn main() {
 	utils::set_panic_hook();
@@ -57,34 +55,31 @@ fn default_spliceThreshold() -> f64 { 45.0_f64.to_radians() }
 fn default_filterSpeckle() -> usize { 4 }
 fn default_pathPrecision() -> u32 { 8 }
 
-
 #[derive(Tsify, Debug, Serialize, Deserialize)]
 #[tsify(into_wasm_abi, from_wasm_abi)]
 pub struct BinaryImageConverterParams {
 	pub debug: Option<bool>,
-	/** Default is spline.
-     * none = pixel
-     */
+	/** Default is spline. none = pixel. */
 	#[tsify(type = "'polygon'|'spline'|'none'")]
 	#[serde(default = "default_mode")]
 	pub mode: String,
-    /** Must be in radians. Default is 60deg */
-    #[serde(default = "default_cornerThreshold")]
+	/** Must be in radians. Default is 60deg */
+	#[serde(default = "default_cornerThreshold")]
 	pub cornerThreshold: f64,
-    /** Default is 4. */
-    #[serde(default = "default_lengthThreshold")]
+	/** Default is 4. */
+	#[serde(default = "default_lengthThreshold")]
 	pub lengthThreshold: f64,
-    /** Default is 10. */
-    #[serde(default = "default_maxIterations")]
+	/** Default is 10. */
+	#[serde(default = "default_maxIterations")]
 	pub maxIterations: usize,
-    /** Must be in radians. Default is 45deg */
-    #[serde(default = "default_spliceThreshold")]
+	/** Must be in radians. Default is 45deg */
+	#[serde(default = "default_spliceThreshold")]
 	pub spliceThreshold: f64,
-    /** Default is 4. */
-    #[serde(default = "default_filterSpeckle")]
+	/** Default is 4. */
+	#[serde(default = "default_filterSpeckle")]
 	pub filterSpeckle: usize,
-    /** Default is 8. */
-    #[serde(default = "default_pathPrecision")]
+	/** Default is 8. */
+	#[serde(default = "default_pathPrecision")]
 	pub pathPrecision: u32,
 }
 
@@ -131,9 +126,8 @@ impl BinaryImageConverter {
 			height: imageData.height() as usize,
 			pixels: data.to_vec(),
 		};
-        let invert = options.invert.unwrap_or_default();
-		let image =
-			colorImage.to_binary_image(|x| if invert { x.r > 128 } else { x.r < 128 });
+		let invert = options.invert.unwrap_or_default();
+		let image = colorImage.to_binary_image(|x| if invert { x.r > 128 } else { x.r < 128 });
 		let debug = converterOptions.debug.is_some_and(|x| x == true);
 		if (debug) {
 			log(format!("{:#?}", converterOptions).as_str());
@@ -143,7 +137,7 @@ impl BinaryImageConverter {
 					width: image.width,
 					first_val: image.get_pixel_safe(0, 0),
 					height: image.height,
-					data_len: len 
+					data_len: len
 				}
 			)
 			.as_str());

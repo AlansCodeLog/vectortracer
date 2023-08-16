@@ -55,11 +55,18 @@ jobs:
       name: Install Rust Toolchain
       with:
           toolchain: stable
+          default: true
+
+    - uses: actions-rs/toolchain@v1
+      name: Install Rust Toolchain
+      with:
+          toolchain: nightly
+          default: false
+          components: rustfmt
 
     - uses: Swatinem/rust-cache@v2
 
     # regionend
-
 
     # region Steps
     - run: pnpm install --frozen-lockfile
@@ -68,9 +75,11 @@ jobs:
     - run: pnpm install --no-lockfile
       if: "env.USE_LOCKFILE != 'true'"
 
+    - run: pnpm lint:rustfmt
+
     - run: pnpm build
 
-    - name: Release
+    # regionend    - name: Release
       if: "env.ENABLE_RELEASE == 'true'"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
