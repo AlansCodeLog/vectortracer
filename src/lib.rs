@@ -210,11 +210,10 @@ impl BinaryImageConverter {
 	}
 
 	pub fn progress(&self) -> u32 {
-        // avoid division by zero
-        let total = self.clusters.len();
-        if (total == 0) {
-            return 0
-        }
+		let total = self.clusters.len();
+		if (total == 0) {
+			return 100;
+		}
 		100 * (self.counter as u32 / total as u32)
 	}
 }
