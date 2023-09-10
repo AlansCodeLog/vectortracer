@@ -13,7 +13,7 @@ Wasm bindings to [Visioncortex's VTracer library](https://github.com/visioncorte
 	- [x] Control over svg path and background color.
 	- [x] Arbitrary attributes.
 	- [x] Option to scale paths group.
-- [ ] Publish
+- [x] Publish
 - [ ] Color Image Converter
 
 # Installation
@@ -22,7 +22,7 @@ Wasm bindings to [Visioncortex's VTracer library](https://github.com/visioncorte
 npm install vectortracer
 ```
 
-The package can be installed directly from the git repo like so:
+The package can also be installed directly from the git repo like so:
 
 ```
 npm install https://github.com/alanscodelog/vectortracer
